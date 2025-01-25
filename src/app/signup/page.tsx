@@ -13,12 +13,14 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isError, setIsError] = useState(false);
   const route = useRouter();
 
   const getValues = () => {
     setIsLoading(true);
     axios
-      .post("http://localhost:3001/auth/signup", {
+      .post(`${process.env.NEXT_PUBLIC_SERVER_URI}/auth/signup`, {
         email,
         password,
         name,
@@ -29,13 +31,20 @@ export default function Login() {
         setIsLoading(false);
       })
       .catch((error) => {
-        if (error.code == "Network Error") {
-          console.log(error.message);
+        if (error.code == "ERR_NETWORK") {
+          setIsError(true);
+          setErrorMessage(error.message);
         } else {
-          console.log(error);
-          // console.log(error.response.data.msg);
+          console.log(error)
+          setIsError(true);
+          setErrorMessage(error.response.data.msg);
+          setIsLoading(false);
         }
-        setIsLoading(false);
+        setTimeout(() => {
+          setIsError(false);
+          setErrorMessage("");
+          setIsLoading(false)
+        }, 4000);
       });
   };
 
@@ -86,6 +95,18 @@ export default function Login() {
           >
             Show Password
           </label>
+        </div>
+
+        {/* error div */}
+
+        <div
+          className="bg-[#fab1a0] p-2 text-[14px]"
+          style={{
+            border: "1px solid red",
+            display: `${isError ? "block" : "none"}`,
+          }}
+        >
+          {errorMessage}
         </div>
 
         <Button

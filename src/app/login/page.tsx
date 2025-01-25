@@ -31,7 +31,7 @@ export default function Login() {
         setIsLoading(false);
       })
       .catch((error) => {
-        if (error.code == "Network Error") {
+        if (error.code == "ERR_NETWORK") {
           setIsError(true);
           setErrorMessage(error.message);
         } else {
@@ -42,6 +42,7 @@ export default function Login() {
         setTimeout(() => {
           setIsError(false);
           setErrorMessage("");
+          setIsLoading(false)
         }, 4000);
       });
   };
