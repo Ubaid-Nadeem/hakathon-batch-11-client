@@ -52,7 +52,7 @@ export default function Main() {
   const [isLoading, setIsLoading] = useState(true);
   const [isPending, setIsPending] = useState(false);
 
-  const [user, setUser] = useState<any>();
+  const [user, setUser] = useState();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -63,7 +63,7 @@ export default function Main() {
   const [purpose, setPurpose] = useState("");
   const [address, setAddress] = useState("");
   const [token, setToken] = useState("");
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState([]);
   const [isUpdated, setIsUpdated] = useState(true);
   const [upadatedStatus, setUpadatedStatus] = useState("");
   const [city, setCity] = useState("");
@@ -76,7 +76,7 @@ export default function Main() {
   // const URI = "http://localhost:3001";
 
   useEffect(() => {
-    let localUser = localStorage.getItem("taskUser");
+    let localUser = localStorage.getItem("taskUser") ;
 
     if (localUser) {
       setIsLoading(false);
@@ -84,7 +84,7 @@ export default function Main() {
       localUser = JSON.parse(localUser);
       setUser(localUser);
 
-      if (localUser?.role === "Admin") {
+      if ( localUser?.role   === "Admin") {
         getAllusers();
       }
     } else {
