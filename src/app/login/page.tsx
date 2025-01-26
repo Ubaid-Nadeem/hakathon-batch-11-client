@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,18 @@ export default function Login() {
   const [isError, setIsError] = useState(false);
 
   const route = useRouter();
-  const URI = process.env.NEXT_PUBLIC_SERVER_URI;
+  // const URI = process.env.NEXT_PUBLIC_SERVER_URI;
+
+    const URI = process.env.NEXT_PUBLIC_SERVER_URI;
+    // const URI = "http://localhost:3001";
+
+  useEffect(() => {
+    let localUser = localStorage.getItem("taskUser");
+    if (localUser) {
+      route.push("/main");
+    }
+  }, []);
+
   const getValues = () => {
     setIsLoading(true);
     axios
@@ -26,7 +37,7 @@ export default function Login() {
         password,
       })
       .then((res) => {
-        localStorage.setItem("taskSUer", JSON.stringify(res.data.data));
+        localStorage.setItem("taskUser", JSON.stringify(res.data.data));
         route.push("/main");
         setIsLoading(false);
       })
@@ -42,7 +53,7 @@ export default function Login() {
         setTimeout(() => {
           setIsError(false);
           setErrorMessage("");
-          setIsLoading(false)
+          setIsLoading(false);
         }, 4000);
       });
   };
